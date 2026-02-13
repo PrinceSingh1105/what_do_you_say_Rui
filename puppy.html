@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>For Ramaaaaaaa 🌸</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-grad: linear-gradient(135deg, #fff0f6 0%, #ffe9d5 100%);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --btn-grad: linear-gradient(45deg, #ff6a95 0%, #ffb08e 100%);
+            --btn-hover: linear-gradient(45deg, #ff85a7 0%, #ffc4ab 100%);
+            --rose-border: #ff85a7;
+            --text-main: #8a3a5a; 
+            --text-sub: #b56a8a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-grad);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px; 
+            max-height: 95vh; 
+            padding: 40px 25px;
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(255, 140, 170, 0.15);
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; 
+        }
+
+        .puppy-main {
+            width: 140px; 
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid white;
+            box-shadow: 0 10px 20px rgba(138, 58, 90, 0.1);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .jump-animation {
+            animation: dogJump 0.6s ease infinite alternate;
+        }
+
+        @keyframes dogJump {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        h1 { 
+            font-size: 2.2rem; 
+            color: var(--text-main); 
+            margin: 0 0 10px 0; 
+            font-weight: 800; 
+        }
+
+        .question-text { 
+            display: block;
+            font-size: 1.2rem; 
+            color: var(--text-sub); 
+            margin-bottom: 30px; 
+            font-weight: 700; 
+            line-height: 1.4;
+        }
+
+        .description { 
+            font-size: 1.1rem; 
+            line-height: 1.6; 
+            color: var(--text-main); 
+            max-width: 100%; 
+            margin: 0 auto 30px; 
+        }
+
+        .step { display: none; width: 100%; animation: softSlide 0.6s ease-out; }
+        .step.active { display: block; }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-yes {
+            background: var(--btn-grad);
+            color: white;
+            box-shadow: 0 8px 15px rgba(255, 106, 149, 0.2);
+        }
+
+        .btn-no {
+            background: white;
+            color: var(--rose-border);
+            border: 2px solid var(--rose-border);
+        }
+
+        .petal { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; opacity: 0.6; }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+        @keyframes softSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-height: 600px) {
+            .puppy-main { width: 100px; height: 100px; margin-bottom: 15px; }
+            h1 { font-size: 1.8rem; }
+            .container { padding: 25px 20px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container" id="canvas">
+    <img src="puppy.png" alt="Cute Puppy" class="puppy-main" id="puppy">
+
+    <div class="step active" id="step1">
+        <h1>Ramaaaaaaa... 🌸</h1>
+        <span class="question-text">Will you be my Valentine? 💖</span>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="nextStep(4)">Yes, always! 💝</button>
+            <button class="btn-no" id="dodge-no" onmouseover="dodgeInCanvas()" onclick="dodgeInCanvas()">No</button>
+        </div>
+    </div>
+
+    <div class="step" id="step2">
+        <h1>Hold on... 🥺</h1>
+        <span class="question-text">Our bond is special 💖</span>
+        <p class="description">Are you sure? I'm talking about growing together and building something beautiful!</p>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="nextStep(4)">I'm in! 🌼</button>
+            <button class="btn-no" onclick="nextStep(3)">Tell me more... 🤔</button>
+        </div>
+    </div>
+
+    <div class="step" id="step3">
+        <h1>I'm committed! 🤧</h1>
+        <span class="question-text">A promise to you 💖</span>
+        <p class="description">I want to be your person—to support you, laugh with you, and love you through it all.</p>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="nextStep(4)">Yes, let's do it! 🧸</button>
+            <button class="btn-yes" onclick="nextStep(4)">Always Yes! 💖</button>
+        </div>
+    </div>
+
+    <div class="step" id="step4">
+        <h1>Our Journey 🌼</h1>
+        <span class="question-text">Beyond just one day 💖</span>
+        <p class="description">
+            It's not about plans, it's about us. <br>
+            I promise to grow with you, to cherish <br>
+            our bond, and to love you more every day.
+        </p>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="nextStep(5)">I promise too! ✨</button>
+        </div>
+    </div>
+
+    <div class="step" id="step5">
+        <h1 style="color: #ff6a95">Together! 💫</h1>
+        <span class="question-text">Our love is the greatest adventure 💖</span>
+        <p class="description">My heart is so happy! Here’s to us, our growth, and a bond that only gets stronger.</p>
+        <p class="description" style="font-weight: 700;">I love you, Rama! ✨</p>
+    </div>
+</div>
+
+<script>
+    let dodgeCount = 0;
+    const maxDodges = 4;
+
+    function dodgeInCanvas() {
+        const btn = document.getElementById('dodge-no');
+        const canvas = document.getElementById('canvas');
+        
+        if (dodgeCount < maxDodges) {
+            const canvasRect = canvas.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            const padding = 20; 
+            
+            const maxX = canvasRect.width - btnRect.width - padding;
+            const maxY = canvasRect.height - btnRect.height - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            btn.style.position = "absolute";
+            btn.style.left = randomX + "px";
+            btn.style.top = randomY + "px";
+            dodgeCount++;
+        } else {
+            btn.style.position = "static";
+            btn.innerHTML = 'Wait... No? 🥺';
+            btn.onmouseover = null;
+            btn.onclick = () => nextStep(2);
+        }
+    }
+
+    function nextStep(num) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + num).classList.add('active');
+        if(num === 5) {
+            triggerConfetti();
+            document.getElementById('puppy').classList.add('jump-animation');
+        }
+    }
+
+    function triggerConfetti() {
+        const end = Date.now() + (4 * 1000);
+        (function frame() {
+            confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff6a95', '#ffb08e'] });
+            confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff6a95', '#ffb08e'] });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
+    }
+
+    const petalIcons = ['🌸', '✨', '❤️', '💖'];
+    setInterval(() => {
+        const petal = document.createElement('div');
+        petal.innerHTML = petalIcons[Math.floor(Math.random() * petalIcons.length)];
+        petal.classList.add('petal');
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.fontSize = (Math.random() * 10 + 15) + 'px';
+        petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 7000);
+    }, 1000);
+</script>
+</body>
+</html>
